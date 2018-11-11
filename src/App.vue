@@ -1,14 +1,15 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <TodoHeader :addTodo="addTodo"/>
-      <TodoMain :todos="todos" :deleteTodo="deleteTodo"/>
+      <TodoHeader @addTodo="addTodo"/>
+      <TodoMain :todos="todos"/>
       <TodoFooter :todos="todos" :deleteCompleteTodos="deleteCompleteTodos" :selectAllTodos="selectAllTodos"/>
     </div>
   </div>
 </template>
 
 <script>
+  import Pubsub from 'pubsub-js'
   import Header from './components/Header'
   import Main from './components/Main'
   import Footer from './components/Footer'
@@ -19,6 +20,13 @@
       return {
         todos: storageUtils.readTodos()
       }
+    },
+
+    mounted () {
+      //订阅消息(deleteTodo)
+      Pubsub.subscribe('deleteTodo', (msg, index) => {
+        this.deleteTodo(index)
+      })
     },
 
     methods: {
