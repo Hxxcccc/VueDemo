@@ -1,107 +1,77 @@
 <template>
-  <div class="todo-container">
-    <div class="todo-wrap">
-      <TodoHeader @addTodo="addTodo"/>
-      <TodoMain :todos="todos"/>
-      <TodoFooter>
-        <input type="checkbox" v-model="isCheckAll" slot="check">
-        <span slot="size">已完成{{completeSize}}</span> / 全部{{todos.length}}
-        <button class="btn btn-danger" v-show="completeSize" @click="deleteCompleteTodos" slot="delete">清除已完成任务</button>
-      </TodoFooter>
-    </div>
+  <div>
+    <h2 v-if="!repoName">Loading......</h2>
+    <p v-else>
+      most star repo is
+      <a :href="repoUrl">{{repoName}}</a>
+    </p>
   </div>
 </template>
 
 <script>
-  import Pubsub from 'pubsub-js'
-  import Header from './components/Header'
-  import Main from './components/Main'
-  import Footer from './components/Footer'
-  import storageUtils from './utils/storageUtils'
+  import axios from 'axios'
 
   export default {
-    data() {
+    data () {
       return {
-        todos: storageUtils.readTodos()
+        repoName: '',
+        repoUrl: ''
       }
     },
 
-    computed: {
-      //完成的数量
-      completeSize () {
-        return this.todos.reduce((pre, todo) => pre + (todo.complete ? 1 : 0) , 0)
-      },
-      //是否选择 同步修改所有todo
-      isCheckAll: {
-        get () {
-          return this.todos.length===this.completeSize && this.completeSize>0 //计算属性的函数不能调用
-        },
-        set (value) { //代表当前是否勾选boolean值
-          this.selectAllTodos(value)
-        }
-      }
-    },
+    async mounted() {
+      const url = 'https://api.github.com/search/repositories?q=v&sort=stars'
 
-    mounted () {
-      //订阅消息(deleteTodo)
-      Pubsub.subscribe('deleteTodo', (msg, index) => {
-        this.deleteTodo(index)
+      //使用vue-resource发送异步ajax请求获取数据
+     /* this.$http.get('https://api.github.com/search/repositories?q=v&sort=stars')
+      .then(response => {
+        const result = response.data
+        const mostRepo = result.items[0]
+        //更新状态数据
+        this.repoName = mostRepo.name
+        this.repoUrl = mostRepo.html_url
       })
-    },
+      .catch(response => {
+        alert('请求出错了。。。')
+      })*/
 
-    methods: {
-      //添加todo
-      addTodo (todo) {
-        this.todos.unshift(todo)
-      },
+     //使用axios发送请求
+      /*axios.get(url)
+        .then(response => {
+          const result = response.data
+          const mostRepo = result.items[0]
+          //更新数据状态
+          this.repoName = mostRepo.name
+          this.repoUrl = mostRepo.html_url
+        })
+        .catch(response => {
+          alert('请求出错了。。。')
+        })*/
 
-      deleteTodo (index) {
-        //删除指定下标todo
-        this.todos.splice(index, 1)
-      },
-
-      //删除已完成的todo
-      deleteCompleteTodos () {
-      this.todos = this.todos.filter(todo => !todo.complete)
-      },
-
-      //全选或全不选所有todo
-      selectAllTodos (isCheck) {
-        this.todos.forEach(todo => todo.complete = isCheck)
+      /*
+        1.作用
+          简化promise的使用 不再使用then().catch()来指定回调函数
+          通过同步编程方式实现异步流程
+        2.哪里使用await?
+           在返回promise对象的表达式左侧 为了得到其异步返回结果数据(而不是promise)
+        3. 哪里使用async
+            await所在函数定义的左侧
+       */
+      try{
+        const response = await axios.get(url)
+        const result = response.data
+        const mostRepo = result.items[0]
+        //更新数据状态
+        this.repoName = mostRepo.name
+        this.repoUrl = mostRepo.html_url
+      }catch (e) {
+        alert('请求出错了333')
       }
-    },
-
-    watch: {
-      todos: {
-        deep: true, //深度监视
-       /* handler: function (value) {  //todos最新的值
-          //保存todosjson数据到localStorage
-          //localStorage.setItem('todos_key', JSON.stringify(value))
-          storageUtils.saveTodos(value)
-        }*/
-       handler: storageUtils.saveTodos
-       /* handler: function (todos) {
-          localStorage.setItem(TODOS_KEY, JSON.stringify(todos))
-        }*/
-      }
-    },
-
-    components: {
-      TodoHeader: Header,
-      TodoMain: Main,
-      TodoFooter: Footer
     }
   }
+
 </script>
 
 <style scoped>
-  .todo-container {
-    width: 600px;
-    margin: 0 auto;
-  }
-  .todo-container .todo-wrap {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
+
 </style>
