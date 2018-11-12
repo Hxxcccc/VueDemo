@@ -1,35 +1,51 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-xs-offset-2 col-xs-8">
-        <div class="page-header"><h2>魔鬼路由</h2></div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-2 col-xs-offset-2">
-        <div class="list-group">
-          <!--路由链接-->
-          <router-link class="list-group-item" to="/about">About</router-link>
-          <router-link class="list-group-item" to="/home">Home</router-link>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="panel">
-          <div class="panel-body">
-            <!--显示路由组件-->
-            <keep-alive> <!--相关的路由被切换时 组件对象不会被干掉-->
-              <router-view msg="666"/>
-            </keep-alive>
-          </div >
-        </div>
-      </div>
-    </div>
+    <p>click {{count}} times count is {{evenOrOdd}}</p>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+    <button @click="incrementIfOdd">increment if odd</button>
+    <button @click="incrementAsync">increment async</button>
   </div>
 </template>
 
 <script>
-  export default {}
+  import {mapState, mapGetters, mapActions} from 'vuex'
+
+  export default {
+
+    computed: {
+      ...mapState(['count']), //{}
+      ...mapGetters(['evenOrOdd'])
+    },
+
+    methods: {
+      ...mapActions(['increment', 'decrement', 'incrementIfOdd', 'incrementAsync'])
+    }
+
+    /*computed: {
+      count () {
+        return this.$store.state.count
+      },
+      evenOrOdd () {
+        return this.$store.getters.evenOrOdd
+      }
+    },*/
+
+    /*methods: {
+      increment () {
+        this.$store.dispatch('increment')
+      },
+      decrement () {
+        this.$store.dispatch('decrement')
+      },
+      incrementIfOdd () {
+        this.$store.dispatch('incrementIfOdd')
+      },
+      incrementAsync () {
+        this.$store.dispatch('incrementAsync')
+      },
+    }*/
+  }
 </script>
 
 <style scoped>

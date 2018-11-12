@@ -3,8 +3,9 @@
  */
 
 import Vue from 'vue'
+
 import App from './App'
-import store from './vuex/store'
+import router from './router'
 
 new Vue ({
   el: '#app',
@@ -12,7 +13,7 @@ new Vue ({
     App
   },
   template: '<App/>',
-  store, //配置store ==> 所有组件对象都多了一个属性：$store
+  router,  //注册路由器
 })
 
 
