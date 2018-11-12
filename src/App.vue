@@ -18,7 +18,7 @@
         <div class="panel">
           <div class="panel-body">
             <!--显示路由组件-->
-            <router-view/>
+            <router-view msg="Hxc"/>
           </div >
         </div>
       </div>

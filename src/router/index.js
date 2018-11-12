@@ -7,6 +7,7 @@ import About from '../pages/About'
 import Home from '../pages/Home'
 import News from '../pages/News'
 import Message from '../pages/Message'
+import MessageDetail from '../pages/MessageDetail'
 
 //声明使用vue插件
 Vue.use(VurRouter)
@@ -28,11 +29,17 @@ export default new VurRouter ({
         },
         {
           path: '/home/message',
-          component: Message
+          component: Message,
+          children: [
+            {
+              path: '/home/message/detail/:id',
+              component: MessageDetail
+            }
+          ]
         },
         {
           path: '',
-          redirect: '/home/news' 
+          redirect: '/home/news'
         }
       ]
     },
