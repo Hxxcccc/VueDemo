@@ -1,29 +1,33 @@
 <template>
   <div>
-    <mt-button icon="more" style="width: 100%" type="danger" @click="hint">戾气太重了</mt-button>
+    <div class="row">
+      <div class="col-xs-offset-2 col-xs-8">
+        <div class="page-header"><h2>魔鬼路由</h2></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-2 col-xs-offset-2">
+        <div class="list-group">
+          <!--路由链接-->
+          <router-link class="list-group-item" to="/about">About</router-link>
+          <router-link class="list-group-item" to="/home">Home</router-link>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="panel">
+          <div class="panel-body">
+            <!--显示路由组件-->
+            <router-view/>
+          </div >
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  //import {Button} from 'mint-ui'
-  import {Toast} from 'mint-ui'
-
-  export default {
-    //局部注册组件 只能在当前组件使用
-    /*components: {
-      Button
-    }*/
-    methods: {
-      hint () {
-        Toast({
-          message: '妹有画面啊',
-          position: 'bottom',
-          duration: 5000
-        })
-      }
-    }
-  }
-
+  export default {}
 </script>
 
 <style scoped>
