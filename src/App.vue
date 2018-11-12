@@ -18,7 +18,9 @@
         <div class="panel">
           <div class="panel-body">
             <!--显示路由组件-->
-            <router-view msg="Hxc"/>
+            <keep-alive> <!--相关的路由被切换时 组件对象不会被干掉-->
+              <router-view msg="666"/>
+            </keep-alive>
           </div >
         </div>
       </div>
