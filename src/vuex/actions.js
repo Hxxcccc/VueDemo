@@ -17,7 +17,7 @@ export default {
 
     //发ajax请求 获取数据
     //使用axios发送ajax请求
-    const url = ` https://api.github.com/search/users2?q=${searchName}`
+    const url = ` https://api.github.com/search/users?q=${searchName}`
     try {
       const response = await axios.get(url)
       const result = response.data
