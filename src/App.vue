@@ -1,51 +1,21 @@
 <template>
-  <div>
-    <p>click {{count}} times count is {{evenOrOdd}}</p>
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-    <button @click="incrementIfOdd">increment if odd</button>
-    <button @click="incrementAsync">increment async</button>
+  <div class="container">
+    <Search/>
+    <UserMain/>
   </div>
 </template>
 
 <script>
-  import {mapState, mapGetters, mapActions} from 'vuex'
+  import Search from './components/Search'
+  import Main from './components/Main'
 
   export default {
-
-    computed: {
-      ...mapState(['count']), //{}
-      ...mapGetters(['evenOrOdd'])
-    },
-
-    methods: {
-      ...mapActions(['increment', 'decrement', 'incrementIfOdd', 'incrementAsync'])
+    components: {
+      Search,
+      UserMain: Main
     }
-
-    /*computed: {
-      count () {
-        return this.$store.state.count
-      },
-      evenOrOdd () {
-        return this.$store.getters.evenOrOdd
-      }
-    },*/
-
-    /*methods: {
-      increment () {
-        this.$store.dispatch('increment')
-      },
-      decrement () {
-        this.$store.dispatch('decrement')
-      },
-      incrementIfOdd () {
-        this.$store.dispatch('incrementIfOdd')
-      },
-      incrementAsync () {
-        this.$store.dispatch('incrementAsync')
-      },
-    }*/
   }
+
 </script>
 
 <style scoped>
